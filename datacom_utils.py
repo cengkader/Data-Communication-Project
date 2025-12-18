@@ -1,3 +1,4 @@
+# datacom_utils.py
 def text_to_binary(text):
     """Metin girdisini 8 bitlik ASCII değerlerine göre ikili dizeye çevirir."""
     
