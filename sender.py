@@ -1,14 +1,13 @@
-# sender.py - Komuta Merkezi (Client 1)
 import socket
-# datacom_utils'dan yeni fonksiyonları import ediyoruz
+
 from datacom_utils import (
     calculate_crc16, calculate_parity, text_to_binary, 
     calculate_2d_parity, calculate_checksum, calculate_hamming
 )
 
-# Ayarlar
+
 HOST = '127.0.0.1'
-TARGET_PORT = 6001 # Server'ın dinlediği port
+TARGET_PORT = 6001 
 
 def start_sender():
     print("---------------------------------------")
@@ -21,7 +20,7 @@ def start_sender():
     print("---------------------------------------")
     
     while True:
-        # Kullanıcıdan mesaj al
+        
         command = input("\n📝 [KOMUTAN] Emriniz nedir? (Örn: VUR A1): ")
         if command.lower() == 'q':
             break
@@ -31,7 +30,7 @@ def start_sender():
         method_name = ""
         control_info = ""
         
-        # Seçime göre kontrol bilgisini hesapla
+        
         if method_choice == '1':
             method_name = "CRC16"
             control_info = calculate_crc16(command)
@@ -52,18 +51,16 @@ def start_sender():
             print("⚠️ Geçersiz seçim. Lütfen 1 ile 5 arasında bir sayı girin.")
             continue
 
-        # ... (Geri kalan paket oluşturma ve gönderme kısmı değişmedi)
-        
-        # Paketi oluştur: DATA|METHOD|CONTROL_INFO
+       
         packet = f"{command}|{method_name}|{control_info}"
         
-        # Bilgi mesajı
+        
         print(f"\n📦 Hazırlanan Paket:")
         print(f"   Veri: {command}")
         print(f"   Yöntem: {method_name}")
         print(f"   Kontrol Kodu: {control_info}")
         
-        # Gönderme işlemi (değişmedi)
+        
         try:
             with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
                 s.connect((HOST, TARGET_PORT))
@@ -72,23 +69,24 @@ def start_sender():
         except ConnectionRefusedError:
             print("❌ [HATA] Düşman istasyonuna (Server) bağlanılamadı! Server çalışıyor mu?")
 
-        # Paketi oluştur: DATA|METHOD|CONTROL_INFO
+        
         packet = f"{command}|{method_name}|{control_info}"
         
-        # Bilgi mesajı
+        
         print(f"\n📦 Hazırlanan Paket:")
         print(f"   Veri: {command}")
         print(f"   Yöntem: {method_name}")
         print(f"   Kontrol Kodu: {control_info}")
         
-        # Gönderme işlemi (değişmedi)
+    
         try:
             with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
                 s.connect((HOST, TARGET_PORT))
-                s.sendall(packet.encode('utf-8')) # UTF-8 kullanmak iyi bir pratik
+                s.sendall(packet.encode('utf-8')) 
                 print(f"🚀 [KOMUTAN] Sinyal gönderildi.")
         except ConnectionRefusedError:
             print("❌ [HATA] Düşman istasyonuna (Server) bağlanılamadı! Server çalışıyor mu?")
 
 if __name__ == "__main__":
     start_sender()
+    
